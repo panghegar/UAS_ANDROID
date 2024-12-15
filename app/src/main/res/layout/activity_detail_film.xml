@@ -67,7 +67,7 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/rounded2"
                     android:scaleType="fitXY"
-                    android:src="@drawable/sherina"/>
+                    />
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -143,7 +143,7 @@
                     android:textSize="18dp"/>
 
                 <ImageButton
-                    android:id="@+id/btn_bookmark"
+                    android:id="@+id/btn_favorite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/baseline_bookmark_add_24"
@@ -202,19 +202,6 @@
                         android:textColor="@color/black" />
                 </LinearLayout>
             </ScrollView>
-
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/gettiket"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/genre"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="Get Ticket"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
