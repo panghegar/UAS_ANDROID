@@ -1,10 +1,12 @@
 package com.example.uas_android
 
+import android.app.Activity
 import android.content.Intent
 import android.util.Log
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.uas_android.HomeAdminActivity.Companion.REQUEST_CODE_EDIT_FILM
 import com.example.uas_android.databinding.ItemAdminFilmBinding
 import com.example.uas_android.network.ApiService
 import com.example.uas_android.network.Film
@@ -27,7 +29,7 @@ class FilmAdminAdapter(
                 ratingFilmAdmin.text = data.ratingFilm
                 sinopsisFilmAdmin.text = data.sinopsisFilm
 
-                btnEdit.setOnClickListener{
+                btnEdit.setOnClickListener {
                     val intentToEdit = Intent(itemView.context, AdminEditFilmActivity::class.java)
                     intentToEdit.putExtra("id", data.id)
                     intentToEdit.putExtra("judulFilm", data.judulFilm)
@@ -35,23 +37,25 @@ class FilmAdminAdapter(
                     intentToEdit.putExtra("durasiFilm", data.durasiFilm)
                     intentToEdit.putExtra("ratingFilm", data.ratingFilm)
                     intentToEdit.putExtra("sinopsisFilm", data.sinopsisFilm)
-                    itemView.context.startActivity(intentToEdit)
+                    (itemView.context as Activity).startActivityForResult(intentToEdit, REQUEST_CODE_EDIT_FILM)
                 }
 
-                btnHapus.setOnClickListener{
-                    val response = data.id?.let{ it1 -> client.deleteFilm(it1)}
+                btnHapus.setOnClickListener {
+                    val response = data.id?.let { it1 -> client.deleteFilm(it1) }
 
-                    if (response != null){
-                        response.enqueue(object : Callback<Film>{
+                    if (response != null) {
+                        response.enqueue(object : Callback<Film> {
                             override fun onResponse(call: Call<Film>, response: Response<Film>) {
-                                if (response.isSuccessful){
-                                    Toast.makeText(itemView.context,
+                                if (response.isSuccessful) {
+                                    Toast.makeText(
+                                        itemView.context,
                                         "Film ${data.judulFilm} berhasil dihapus",
-                                        Toast.LENGTH_SHORT).show()
+                                        Toast.LENGTH_SHORT
+                                    ).show()
 
                                     val position = adapterPosition
 
-                                    if (position != RecyclerView.NO_POSITION){
+                                    if (position != RecyclerView.NO_POSITION) {
                                         removeItem(position)
                                     }
                                 } else {
@@ -92,10 +96,20 @@ class FilmAdminAdapter(
         return listFilm.size
     }
 
+    fun updateData(newFilmList: List<Film>) {
+        val listFilm = newFilmList
+        notifyDataSetChanged() // Memberitahu RecyclerView untuk memperbarui tampilan
+    }
 
-    fun removeItem(position: Int){
+    fun removeItem(position: Int) {
         listFilm.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, listFilm.size)
     }
+
+    fun updateItem(position: Int, newFilm: Film) {
+        listFilm[position] = newFilm
+        notifyItemChanged(position)
+    }
+
 }

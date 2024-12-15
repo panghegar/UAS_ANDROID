@@ -20,7 +20,7 @@ class AdminAddFilmActivity : AppCompatActivity() {
 
         // Inisialisasi Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://ppbo-api.vercel.app/IBNZw/film/")
+            .baseUrl("https://ppbo-api.vercel.app/IBNZw/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         apiService = retrofit.create(ApiService::class.java)
@@ -47,7 +47,6 @@ class AdminAddFilmActivity : AppCompatActivity() {
 
         // Buat objek Film
         val film = Film(
-            id = "", // ID kosong karena server biasanya akan men-generate ID
             judulFilm = title,
             directorFilm = director,
             durasiFilm = duration,
@@ -60,11 +59,15 @@ class AdminAddFilmActivity : AppCompatActivity() {
             override fun onResponse(call: Call<Film>, response: Response<Film>) {
                 if (response.isSuccessful) {
                     Toast.makeText(this@AdminAddFilmActivity, "Film berhasil ditambahkan", Toast.LENGTH_SHORT).show()
+
+                    // Kirim sinyal atau panggil fungsi untuk reload data RecyclerView
+                    setResult(RESULT_OK) // Mengirim tanda ke aktivitas sebelumnya
                     finish()
                 } else {
                     Toast.makeText(this@AdminAddFilmActivity, "Gagal menambahkan film", Toast.LENGTH_SHORT).show()
                 }
             }
+
 
             override fun onFailure(call: Call<Film>, t: Throwable) {
                 Toast.makeText(this@AdminAddFilmActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()

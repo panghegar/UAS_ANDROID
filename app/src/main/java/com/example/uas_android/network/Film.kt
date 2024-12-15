@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Film(
     @SerializedName("_id")
-    val `id`: String,
+    val id: String? = null,
 
     @SerializedName("judulFilm")
     val `judulFilm`: String,

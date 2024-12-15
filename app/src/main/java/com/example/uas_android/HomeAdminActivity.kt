@@ -19,6 +19,12 @@ class HomeAdminActivity : AppCompatActivity() {
     private lateinit var itemList: ArrayList<Film>
     private lateinit var recyclerViewItem: RecyclerView
 
+    companion object {
+        const val REQUEST_CODE_ADD_FILM = 100
+        const val REQUEST_CODE_EDIT_FILM = 101
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,7 +43,8 @@ class HomeAdminActivity : AppCompatActivity() {
 
         // menambahkan listener ke tombol film baru
         binding.btnPlusAdmin.setOnClickListener {
-            startActivity(Intent(this@HomeAdminActivity, AdminAddFilmActivity::class.java))
+            val intent = Intent(this@HomeAdminActivity, AdminAddFilmActivity::class.java)
+            startActivityForResult(intent, REQUEST_CODE_ADD_FILM) // Tambahkan request code
         }
 
         // menambahkan listener ke tombol kembali
@@ -71,4 +78,14 @@ class HomeAdminActivity : AppCompatActivity() {
             }
         })
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if ((requestCode == REQUEST_CODE_ADD_FILM || requestCode == REQUEST_CODE_EDIT_FILM) && resultCode == RESULT_OK) {
+            // Panggil fungsi untuk mengambil ulang data dari API
+            getFilmList()
+        }
+    }
+
+
+
 }
