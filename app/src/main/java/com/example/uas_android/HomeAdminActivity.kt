@@ -80,11 +80,37 @@ class HomeAdminActivity : AppCompatActivity() {
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if ((requestCode == REQUEST_CODE_ADD_FILM || requestCode == REQUEST_CODE_EDIT_FILM) && resultCode == RESULT_OK) {
-            // Panggil fungsi untuk mengambil ulang data dari API
+        if (requestCode == REQUEST_CODE_EDIT_FILM && resultCode == RESULT_OK && data != null) {
+            val updatedId = data.getStringExtra("updatedFilmId")
+            val updatedTitle = data.getStringExtra("updatedTitle")
+            val updatedDirector = data.getStringExtra("updatedDirector")
+            val updatedDurasi = data.getStringExtra("updatedDurasi")
+            val updatedRating = data.getStringExtra("updatedRating")
+            val updatedSinopsis = data.getStringExtra("updatedSinopsis")
+
+            // Temukan posisi film yang diedit
+            val position = itemList.indexOfFirst { it.id == updatedId }
+            if (position != -1) {
+                // Update data di list dan notify adapter
+                val updatedFilm = Film(
+                    id = updatedId ?: "",
+                    judulFilm = updatedTitle ?: "Judul Tidak Diketahui",
+                    directorFilm = updatedDirector ?: "Tidak Diketahui",
+                    durasiFilm = updatedDurasi ?: "Tidak Diketahui",
+                    ratingFilm = updatedRating ?: "0",
+                    sinopsisFilm = updatedSinopsis ?: "Sinopsis tidak tersedia"
+                )
+
+
+                itemList[position] = updatedFilm
+                itemAdapter.notifyItemChanged(position)
+            }
+        } else if (requestCode == REQUEST_CODE_ADD_FILM && resultCode == RESULT_OK) {
+            // Untuk kasus tambah film, panggil ulang data dari API
             getFilmList()
         }
     }
+
 
 
 
