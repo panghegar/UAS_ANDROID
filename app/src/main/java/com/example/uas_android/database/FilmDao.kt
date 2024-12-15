@@ -1,25 +1,15 @@
 package com.example.uas_android.database
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 
 @Dao
 interface FilmDao {
-    @Insert
-    suspend fun insert(film: Film)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertFilm(film: FilmBookmark)
 
-    @Update
-    suspend fun update(film: Film)
+    @Query("SELECT * FROM film_bookmark")
+    suspend fun getAllBookmarks(): List<FilmBookmark>
 
     @Delete
-    suspend fun delete(film: Film)
-
-    @Query("SELECT * FROM film_table ORDER BY id ASC")
-    suspend fun getAllFilm(): List<Film>
-
-    @Query("SELECT * FROM film_table WHERE id = :filmId LIMIT 1")
-    suspend fun getFilmById(filmId: Int): Film?
+    suspend fun deleteFilm(film: FilmBookmark)
 }

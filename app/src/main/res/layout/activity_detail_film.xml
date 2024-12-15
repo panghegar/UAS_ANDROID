@@ -67,6 +67,7 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/rounded2"
                     android:scaleType="fitXY"
+                    android:src="@drawable/rembulan"
                     />
             </androidx.cardview.widget.CardView>
 
